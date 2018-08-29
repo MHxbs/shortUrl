@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        function getParam(paramName) {
+            paramValue = "", isFound = !1;
+            if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+                arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;
+                while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++
+            }
+            return paramValue == "" && (paramValue = null), paramValue
+        }
+
+
+
+
+        function sendUrl(url,password,repeat) {
+
+            var username=getParam("username");
+
+            $.ajax({
+                type:'post',
+                url:'http://menghong.fun:8081/shorturl/create',
+                data:{"url":url,"password":password,"repeat":repeat,"username":username},
+                cache:false,
+                dataType:'json',
+                success:function (result) {
+                    if (result.status==200) {
+                        $("#showMessage").append("<p> 原地址：" + result.data.previousUrl + "</p><br>" +
+                            "<p> 短网址：" + result.data.shortUrl + "</p>")
+                    }else {
+                        alert(result.msg)
+                    }
+                }
+
+            })
+
+        }
+    </script>
+</head>
+<body>
+
+    地址：<input type="text" id="url"></p>
+
+    <b>以后通过短网址登录时所需要的密码</b>
+    password:<input type="password" id="password">
+    repeat:<input type="password" id="repeat">
+        <button id="sendUrl" onclick="sendUrl(url.value,password.value,repeat.value)">提交</button>
+
+
+    <div id="showMessage">
+
+    </div>
+
+</body>
+</html>

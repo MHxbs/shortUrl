@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录界面</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+        function sendUrl(password,username) {
+            $.ajax({
+                type:'post',
+                url:'http://menghong.fun:8081/shorturl/login',
+                data:{"password":password,"username":username},
+                cache:false,
+                dataType:'json',
+                success:function (result) {
+                    if (result.status==200) {
+                        window.location.href="http://menghong.fun:8081/shorturl/short?username="+username
+                        }else {
+                        alert(result.msg)
+                    }
+                }
+
+            })
+
+        }
+    </script>
+</head>
+<body>
+
+<h1>登录</h1><br>
+    username:<input type="text" id="username">
+    password:<input type="password" id="password">
+    <button id="send" onclick="sendUrl(password.value,username.value)">提交</button>
+    <a href="/shorturl/register">注册</a>
+
+<br>
+
+<b>创建用户，每个最初的用户只能缩短5个网址</b>
+</body>
+</html>
